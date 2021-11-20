@@ -1,5 +1,5 @@
 var zip = new JSZip();
-//Last Pathloolook3yu s
+//Creates Export folder
 var photoZip = zip.folder("math-operation-images");
 var press = false;
 var type = -1;
@@ -7,6 +7,7 @@ var typen = -1;
 var ctx, canvas, x, y, preview, img, images, countLabel, rand;
 var count = [0,0,0,0,0];
 function init() {
+	//Instantiating Canvas and labels
 	var label = document.getElementById("label");
 	countLabel = document.getElementById("count");
 	canvas = document.getElementById("mathSymbol");
@@ -16,14 +17,17 @@ function init() {
 	ctx.lineCap = "round";
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	//Randomly Generated 8 digit key to avoid naming conflicts
 	rand = ((Math.floor(Math.random()*100000000))+"").padStart(8,"0");
 	photoCount = 0;
 
+	//When mouse is pressed down begin drawing
 	canvas.addEventListener("mousedown", function(event){
 		press = true;
 		ctx.beginPath();
 	}, false);
 
+	//For every Mouse movement create a new path from the old position and fill it in.
 	canvas.addEventListener("mousemove", function(event){
 			var pos = getPos(event);
 			ctx.beginPath();
@@ -36,14 +40,17 @@ function init() {
 			}
 	}, false);
 
+	//If mouse is no longer clicked, press = false;
 	canvas.addEventListener("mouseup", function(event){
 		press = false;
 	}, false);
 
+	//If mouse moves off canvas, press = false;
 	canvas.addEventListener("mouseout", function(event){
 		press = false;
 	}, false);
 
+	//Keyboard Shortcuts
 	document.addEventListener("keydown", function(event){
 		switch(event.key){
 			case "s":
@@ -56,20 +63,17 @@ function init() {
 		}
 	},false);
 }
-//
+//Erases the current canvas
 function erase(){
-	//if(confirm("Clear Drawing?")){
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-	//}
-		ctx.closePath();
-		press = false;
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	ctx.closePath();
+	press = false;
 	console.log("buttonPressed");
 }
 
+//Saves the canvas and clears it if an operation is selected
 function save(){
-	//Implement saving
 	img = canvas.toDataURL();
-	
 	if(type==-1){
 		alert("Please Select an Operation First");
 	}else{
@@ -79,6 +83,7 @@ function save(){
 	}
 }
 
+//Download the zip file
 function download(){
 	zip.generateAsync({type:"blob"}).then(function (blob) {
 		saveAs(blob, "photos.zip");
@@ -86,9 +91,13 @@ function download(){
         jQuery("#blob").text(err);
     });
 }
+
+//Updates the count of images
 function updateCount(){
 	countLabel.innerHTML = count[typen] + " images";
 }
+
+//Switches the current operation, clears the canvas
 function switchOp(button){
 	type = button.id;
 	switch(type){
@@ -115,13 +124,12 @@ function switchOp(button){
 	}
 	updateCount();
 	erase();
-
 }
+
+//Gets the current position, scaled down because the canvas is scaled up
 function getPos(event){
 	var x = event.layerX/10;
 	var y = event.layerY/10;
-	//var x = event.layerX;
-	//var y = event.layerY;
 	return{
 		x: x,
 		y: y
