@@ -53,11 +53,13 @@ function init() {
 	}, false);
 	//Touch move
 	canvas.addEventListener("touchmove", function(event){
+		ctx.beginPath();
 		event.preventDefault();
 		draw(event);
 	}, false);
 	//Touch end
 	canvas.addEventListener("touchend", function(event){
+		event.preventDefault();
 		press = false;
 	}, false);
 	//Touch Cancel
