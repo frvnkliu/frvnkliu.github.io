@@ -58,7 +58,6 @@ function init() {
 	}, false);
 	//Touch end
 	canvas.addEventListener("touchend", function(event){
-		event.preventDefault();
 		press = false;
 	}, false);
 	//Touch Cancel
