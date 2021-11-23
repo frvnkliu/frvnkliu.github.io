@@ -21,6 +21,7 @@ function init() {
 	rand = ((Math.floor(Math.random()*100000000))+"").padStart(8,"0");
 	photoCount = 0;
 
+		//Mouse
 	//When mouse is pressed down begin drawing
 	canvas.addEventListener("mousedown", function(event){
 		press = true;
@@ -29,17 +30,9 @@ function init() {
 
 	//For every Mouse movement create a new path from the old position and fill it in.
 	canvas.addEventListener("mousemove", function(event){
-			var pos = getPos(event);
-			ctx.beginPath();
-			ctx.moveTo(x, y); 
-			x = pos.x;
-			y = pos.y
-			if(press){
-				ctx.lineTo(x,y);
-				ctx.stroke();
-			}
+		draw(event);
 	}, false);
-
+	
 	//If mouse is no longer clicked, press = false;
 	canvas.addEventListener("mouseup", function(event){
 		press = false;
@@ -47,6 +40,22 @@ function init() {
 
 	//If mouse moves off canvas, press = false;
 	canvas.addEventListener("mouseout", function(event){
+		press = false;
+	}, false);
+	
+	//Touch
+
+	//Touch start
+	canvas.addEventListener("touchstart", function(event){
+		press = true;
+		ctx.beginPath();
+	}, false);
+	//Touch move
+	canvas.addEventListener("touchmove", function(event){
+		draw(event);
+	}, false);
+	//Touch end
+	canvas.addEventListener("touchend", function(event){
 		press = false;
 	}, false);
 
@@ -63,6 +72,20 @@ function init() {
 		}
 	},false);
 }
+
+//Drawing function
+function draw(event){
+	var pos = getPos(event);
+	ctx.beginPath();
+	ctx.moveTo(x, y); 
+	x = pos.x;
+	y = pos.y
+	if(press){
+		ctx.lineTo(x,y);
+		ctx.stroke();
+	}
+}
+
 //Erases the current canvas
 function erase(){
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
