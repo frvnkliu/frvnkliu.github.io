@@ -47,15 +47,21 @@ function init() {
 
 	//Touch start
 	canvas.addEventListener("touchstart", function(event){
+		event.preventDefault();
 		press = true;
 		ctx.beginPath();
 	}, false);
 	//Touch move
 	canvas.addEventListener("touchmove", function(event){
+		event.preventDefault();
 		draw(event);
 	}, false);
 	//Touch end
 	canvas.addEventListener("touchend", function(event){
+		press = false;
+	}, false);
+	//Touch Cancel
+	canvas.addEventListener("touchcancel", function(event){
 		press = false;
 	}, false);
 
