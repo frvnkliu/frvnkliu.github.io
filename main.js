@@ -53,7 +53,6 @@ function init() {
 	}, false);
 	//Touch move
 	canvas.addEventListener("touchmove", function(event){
-		ctx.beginPath();
 		event.preventDefault();
 		draw(event);
 	}, false);
