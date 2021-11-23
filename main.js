@@ -59,12 +59,10 @@ function init() {
 	//Touch end
 	canvas.addEventListener("touchend", function(event){
 		press = false;
-		ctx.closePath();
 	}, false);
 	//Touch Cancel
 	canvas.addEventListener("touchcancel", function(event){
 		press = false;
-		ctx.closePath();
 	}, false);
 
 	//Keyboard Shortcuts
