@@ -57,11 +57,11 @@ function init() {
 		draw(event);
 	}, false);
 	//Touch end
-	canvas.addEventListener("touchend", function(event){
+	document.addEventListener("touchend", function(event){
 		press = false;
 	}, false);
 	//Touch Cancel
-	canvas.addEventListener("touchcancel", function(event){
+	document.addEventListener("touchcancel", function(event){
 		press = false;
 	}, false);
 
