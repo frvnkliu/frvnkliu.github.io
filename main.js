@@ -21,7 +21,7 @@ function init() {
 	rand = ((Math.floor(Math.random()*100000000))+"").padStart(8,"0");
 	photoCount = 0;
 
-		//Mouse
+	//Mouse
 	//When mouse is pressed down begin drawing
 	canvas.addEventListener("mousedown", function(event){
 		press = true;
