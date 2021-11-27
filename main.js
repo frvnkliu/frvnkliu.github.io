@@ -57,11 +57,11 @@ function init() {
 		draw(event);
 	}, false);
 	//Touch end
-	document.addEventListener("touchend", function(event){
+	canvas.addEventListener("touchend", function(event){
 		press = false;
 	}, false);
 	//Touch Cancel
-	document.addEventListener("touchcancel", function(event){
+	canvas.addEventListener("touchcancel", function(event){
 		press = false;
 	}, false);
 
@@ -95,9 +95,7 @@ function draw(event){
 //Erases the current canvas
 function erase(){
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	ctx.closePath();
 	press = false;
-	console.log("buttonPressed");
 }
 
 //Saves the canvas and clears it if an operation is selected
@@ -112,6 +110,19 @@ function save(){
 	}
 }
 
+function remove(){
+	
+	if(count[typen]==0){
+		alert("No More Images To Remove");
+	}else{
+		photoZip.folder(type).remove(`${type}${count[typen]}_${rand}.png`);
+		if(count[typen]--==1){
+			photoZip.remove(type);
+		}
+		updateCount();
+	}
+	erase();
+}
 //Download the zip file
 function download(){
 	zip.generateAsync({type:"blob"}).then(function (blob) {
