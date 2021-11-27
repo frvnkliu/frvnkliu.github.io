@@ -1,4 +1,4 @@
-<!DOCTYPE html>`
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>DrawTool</title>
@@ -15,14 +15,17 @@
 		<p class = "title" id="label">Please Select an Operation to Draw</p>
 		<div class="field">
 			<canvas id="mathSymbol" width="32" height="32"></canvas>
-			<p class = "title" id="count">0 Images</p>
+			<p class = "title" id="count">Operation Image Count</p>
 			<div class="tools">
 				<button id = "clearBtn" onclick="erase()">Clear</button>
 				<button id = "saveBtn" onclick="save()">Save</button>
-				<button id = "downloadBtn" onclick="download()">Download</button>
+				<button id = "removeBtn" onclick="remove()">Remove</button>
 			</div>
 		</div>
-		<p class = "title" id = "instructions">Keyboard Shortcuts:<br>"C" - Clear<br>"S" - Save<br>Email: frvnkliu@gmail.com</p>
+		<p class = "title" id = "instructions">Keyboard Shortcuts:<br>"C" - Clear<br>"S" - Save</p>
+		<div class="tools">
+			<button id = "downloadBtn" onclick="download()">Download</button>
+		</div>
 		<script src="modules/jszip.min.js"></script>
 		<script src="modules/FileSaver.js"></script>
 		<script src="main.js"></script>
