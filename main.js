@@ -113,8 +113,9 @@ function save(){
 }
 
 function remove(){
-	
-	if(count[typen]==0){
+	if(type==-1){
+		alert("Please Select an Operation First");
+	}else if(count[typen]==0){
 		alert("No More Images To Remove");
 	}else{
 		photoZip.folder(type).remove(`${type}${count[typen]}_${rand}.png`);
