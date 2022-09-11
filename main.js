@@ -171,8 +171,10 @@ function switchOp(button){
 
 //Gets the current position, scaled down because the canvas is scaled up
 function getPos(event){
-	var x = event.layerX/10;
-	var y = event.layerY/10;
+	var x = event.layerX - canvas.offsetLeft;
+	var y = event.layerY - canvas.offsetTop;
+	x /= 10;
+	y /= 10;
 	return{
 		x: x,
 		y: y
