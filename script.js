@@ -218,7 +218,8 @@ function onSubmit(){
     } else if (state == 2) {
         audio.volume = scaleOuter;
         name = input.value;
-        document.body.requestFullscreen();
+        if (document.body.requestFullscreen) document.body.requestFullscreen();
+        
         const overlay = document.getElementById("overlay");
         overlay.innerHTML = `...`;
         setTimeout(() => {
