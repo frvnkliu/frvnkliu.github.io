@@ -1,0 +1,60 @@
+body {
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    background-color: black;
+}
+
+
+#container{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#container {
+    cursor: default;
+}
+
+#container.hovered {
+    cursor: pointer;
+}
+
+#overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+
+    border-radius: 10px;
+}
+
+#prompt{
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+#info{
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 1;
+    border-radius: 10px;
+    color:  white;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-align: center;
+    /*display:  none;*/
+}
+
+#info a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#info a:hover {
+    text-decoration: underline;
+}

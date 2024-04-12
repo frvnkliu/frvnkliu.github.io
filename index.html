@@ -1,36 +1,26 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>DrawTool</title>
-		<link rel="stylesheet" type="text/css" href="style.css">
-	</head>
-	<body onload="init()">
-		<div class = "buttons">
-			<div class = "switchButtons" id = "plus" onclick="switchOp(this)">+</div>
-			<div class = "switchButtons" id = "minus" onclick="switchOp(this)">-</div>
-			<div class = "switchButtons" id = "multiply" onclick="switchOp(this)">×</div>
-			<div class = "switchButtons" id = "divide" onclick="switchOp(this)">÷</div>
-			<div class = "switchButtons" id = "slash" onclick="switchOp(this)">/</div>
-		</div>
-		<p class = "title" id="label">Please Select an Operation to Draw</p>
-		<div class="field">
-			<canvas id="mathSymbol" width="32" height="32"></canvas>
-			<p class = "title" id="count">Operation Image Count</p>
-			<div class="tools">
-				<button id = "clearBtn" onclick="erase()">Clear</button>
-				<button id = "saveBtn" onclick="save()">Save</button>
-				<button id = "removeBtn" onclick="remove()">Remove</button>
-			</div>
-		</div>
-		<p class = "title" id = "instructions">Keyboard Shortcuts:<br>"C" - Clear<br>"S" - Save</p>
-		<div class="tools">
-			<button id = "downloadBtn" onclick="download()">Download</button>
-		</div>
-		<div style = "text-align: center; margin-top: 15px">
-			<a class = "title" href = "mailto: frvnkliu@gmail.com">Send Email</a>
-		</div>
-		<script src="modules/jszip.min.js"></script>
-		<script src="modules/FileSaver.js"></script>
-		<script src="main.js"></script>
-	</body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script type="module" src = "script.js" defer></script>
+</head>
+<body>
+    <audio id="bgAudio" loop = true>
+        <source src="ethereal.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+     <div id = "container">
+        <div id = "overlay">
+            <div id = prompt>What is 1+1?</div>
+            <input type="text" id = "introInput" name="name">
+        </div>
+    </div>
+    <div id = "info">
+        © 2024 Frank Liu | <a href= "https://frvnk.xyz" target = "blank">frvnk.xyz</a>
+    </div>
+</body>
 </html>
