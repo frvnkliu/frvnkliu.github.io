@@ -175,15 +175,15 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-var start = 0;
+var state = 0;
 var name = "";
 const input = document.getElementById("introInput");
 const prompt = document.getElementById("prompt");
 const info = document.getElementById("info");
 var meow = false;
 function onSubmit(){
-    if (start == 0) {
-        start = 1;
+    if (state == 0) {
+        state = 1;
         var ans = input.value.trim().toLowerCase();
         document.body.requestFullscreen();
 
@@ -212,10 +212,10 @@ function onSubmit(){
             setTimeout(() => {
                 prompt.innerHTML = `What is your name?`;
                 input.value = "";
-                start = 2;
+                state = 2;
             }, 1500);
         }, 700);
-    } else if (start == 2) {
+    } else if (state == 2) {
         audio.volume = scaleOuter;
         name = input.value;
         document.body.requestFullscreen();
@@ -240,6 +240,8 @@ function onSubmit(){
         }, 700);
     }
 }
+
+//document.getElementById("submit").addEventListener("touchstart click", onSubmit);
 
 document.getElementById("submit").addEventListener("click", onSubmit);
 
