@@ -59,6 +59,7 @@ pointsGeometry2.setAttribute('position', new THREE.Float32BufferAttribute(positi
 var points2 = new THREE.Points(pointsGeometry2, pointsMaterial2);
 scene.add(points2);
 
+const terces= document.getElementById("secret").firstElementChild;
 // Initial speed
 points.rotationSpeed = 0.001;
 
@@ -137,6 +138,21 @@ sphere.scale.set(0, 0, 0);
 points.scale.set(0, 0, 0);
 points2.scale.set(0, 0, 0);
 
+function recalibrate(run = false){
+    if(!run){
+        terces.value = "bark";
+        return false;
+    } 
+    const cow = terces.value;
+    if(/^#[0-9A-F]{6}#[0-9A-F]{6}$/i.test(cow) ){
+        pointsMaterial.color.set(cow.substring(0,7));
+        pointsMaterial2.color.set(cow.substring(7));
+        return true;
+    }
+    return false;
+}
+
+
 function animate() {
     requestAnimationFrame(animate);
     if(scaleOuter<1){
@@ -161,48 +177,57 @@ function animate() {
 
 var start = 0;
 var name = "";
-
 const input = document.getElementById("introInput");
 const prompt = document.getElementById("prompt");
 const info = document.getElementById("info");
+var meow = false;
+function onSubmit(){
+    if (start == 0) {
+        start = 1;
+        var ans = input.value.trim();
+        document.body.requestFullscreen();
 
-input.addEventListener("keydown", (e) => {
-    if (e.keyCode == 13) {
-        if (start == 0) {
-            start = 1;
-            var ans = e.target.value.trim();
-            document.body.requestFullscreen();
-
-            prompt.innerHTML = `...`;
-            //info.style.display = "block";
+        prompt.innerHTML = `...`;
+        //info.style.display = "block";
+        setTimeout(() => {
+            recalibrate();
+            meow = (ans.toLowerCase()).indexOf(`meow`)>-1
+            if(meow) prompt.innerHTML = "Meow. :3";
+            else prompt.innerHTML =  (ans.length && ans[0] == '2')||recalibrate(ans === 'bark')?  `Good Job.`: `Close Enough.`;
             setTimeout(() => {
-                if( (ans.toLowerCase()).indexOf(`meow`)>-1) prompt.innerHTML = "Meow. :3"
-                else prompt.innerHTML =  (ans.length && ans[0] == '2') ?  `Good Job.`: `Close Enough.`;
-                setTimeout(() => {
-                    prompt.innerHTML = `What is your name?`;
-                    input.value = "";
-                    start = 2;
-                }, 1500);
-            }, 700);
-        } else if (start == 2) {
-            audio.volume = scaleOuter;
-            name = e.target.value;
-            document.body.requestFullscreen();
-            const overlay = document.getElementById("overlay");
-            overlay.innerHTML = `...`;
+                prompt.innerHTML = `What is your name?`;
+                input.value = "";
+                start = 2;
+            }, 1500);
+        }, 700);
+    } else if (start == 2) {
+        audio.volume = scaleOuter;
+        name = input.value;
+        document.body.requestFullscreen();
+        const overlay = document.getElementById("overlay");
+        overlay.innerHTML = `...`;
+        setTimeout(() => {
+            overlay.innerHTML = `"${meow?"Hewwo\" >.< ": "Hello\" + "} ${name}`;
             setTimeout(() => {
-                overlay.innerHTML = `"Hello " + ${name}`;
+                if(meow && name.toLowerCase() === "emily"){
+                    overlay.innerHTML = `<3`;
+                    pointsMaterial2.color.setHex(0xffbfff);
+                    pointsMaterial.color.setHex(0xff00bf);
+                }
                 setTimeout(() => {
-                    overlay.innerHTML = `:)`;
-                    setTimeout(() => {
-                        audio.play();
-                        overlay.style.display = "none";
-                        animate();
-                    }, 800);
-                }, 1500);
-            }, 700);
-        }
+                    audio.play();
+                    animate();
+                    setTimeout(() => overlay.classList.add("hidden"), 200);
+                }, 800);
+            }, 1500);
+        }, 700);
     }
+}
+
+document.getElementById("submit").addEventListener("click", onSubmit);
+
+input.addEventListener("keydown", (e) =>{
+    if (e.keyCode == 13) onSubmit();
 });
 
 
