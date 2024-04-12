@@ -184,16 +184,31 @@ var meow = false;
 function onSubmit(){
     if (start == 0) {
         start = 1;
-        var ans = input.value.trim();
+        var ans = input.value.trim().toLowerCase();
         document.body.requestFullscreen();
 
         prompt.innerHTML = `...`;
         //info.style.display = "block";
         setTimeout(() => {
             recalibrate();
-            meow = (ans.toLowerCase()).indexOf(`meow`)>-1
+            meow = ans.indexOf(`meow`)>-1
             if(meow) prompt.innerHTML = "Meow. :3";
             else prompt.innerHTML =  (ans.length && ans[0] == '2')||recalibrate(ans === 'bark')?  `Good Job.`: `Close Enough.`;
+
+            if(ans === "red40"){
+                pointsMaterial.color.setHex(0xff0000);
+            }
+
+            if(ans === "christmas"){
+                pointsMaterial.color.setHex(0xff0000);
+                pointsMaterial2.color.setHex(0x00ff00);
+            }
+
+            if(ans === "nyu"){
+                pointsMaterial2.color.setHex(0x8900e1); // NYU Violet
+                pointsMaterial.color.setHex(0x57068c); // NYU Ultra Violet
+            }
+
             setTimeout(() => {
                 prompt.innerHTML = `What is your name?`;
                 input.value = "";
@@ -213,6 +228,8 @@ function onSubmit(){
                     overlay.innerHTML = `<3`;
                     pointsMaterial2.color.setHex(0xffbfff);
                     pointsMaterial.color.setHex(0xff00bf);
+                }else{
+                    overlay.innerHTML = `:)`;
                 }
                 setTimeout(() => {
                     audio.play();
