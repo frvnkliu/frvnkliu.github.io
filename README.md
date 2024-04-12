@@ -1,3 +1,3 @@
-# DrawTool
-32x32px png Drawing Web App to Create Labelled Data
-<br>https://frvnkliu.github.io/DrawTool/
+# Test site
+Uniform Random Sampling of points on the surface of a sphere using Inverse Transform Sampling, visualized using Three.js
+<br>https://frvnkliu.github.io
