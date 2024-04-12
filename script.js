@@ -123,9 +123,13 @@ document.addEventListener('touchmove', (event) => onMove(event.touches[0].client
 document.addEventListener('touchstart', (event) => {
     manualSpin = true;
     hovered = true;
+    points.rotationSpeed = 0.01;
     startSpin(event.touches[0].clientX, event.touches[0].clientY);
 }, false);
-document.addEventListener('touchend',()=> hovered = manualSpin = false, false);
+document.addEventListener('touchend',()=>{
+    hovered = manualSpin = false;
+    points.rotationSpeed = 0.001;
+} , false);
 
 
 //Start Logic
