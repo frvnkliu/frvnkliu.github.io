@@ -185,7 +185,7 @@ function onSubmit(){
     if (state == 0) {
         state = 1;
         var ans = input.value.trim().toLowerCase();
-        document.body.requestFullscreen();
+        if (document.body.requestFullscreen) document.body.requestFullscreen();
 
         prompt.innerHTML = `...`;
         //info.style.display = "block";
@@ -218,8 +218,7 @@ function onSubmit(){
     } else if (state == 2) {
         audio.volume = scaleOuter;
         name = input.value;
-        if (document.body.requestFullscreen) document.body.requestFullscreen();
-        
+
         const overlay = document.getElementById("overlay");
         overlay.innerHTML = `...`;
         setTimeout(() => {
