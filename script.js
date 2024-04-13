@@ -16,7 +16,7 @@ scene.add(sphere);
 
 
 //randomly sample points for our spheres
-var numPoints = 1000; // adjust as needed
+var numPoints = 1037; // adjust as needed
 var pointsGeometry = new THREE.BufferGeometry();
 var positions = [];
 for (var i = 0; i < numPoints; i++) {
