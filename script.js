@@ -215,40 +215,66 @@ function isColor(strColor){
     return s.color == strColor;
 }
 
-function onSubmit(){
-    var ans = input.value.trim().toLowerCase();
+function onSubmit(event){
+    event.preventDefault();
     if (state == 0) {
         state = 1;
+        var ans = input.value.trim().toLowerCase();
         if (document.body.requestFullscreen) document.body.requestFullscreen();
 
         prompt.innerHTML = `...`;
         setTimeout(() => {
-            if(meow = ans.indexOf(`meow`)>-1) prompt.innerHTML = "Meow. :3";
-            else if(/^2\D.*$|^2$/.test(ans)){
-                 prompt.innerHTML = `Good Job.`;
-            }else if(ans === "red40"){
-                pointsMaterial.color.setHex(0xff0000);
-                pointsMaterial2.color.setHex(0xff2121);
-                prompt.innerHTML = `At least it's not red21.`;
-            }else if (ans === "christmas"){
-                pointsMaterial.color.setHex(0xff0000);
-                pointsMaterial2.color.setHex(0x00ff00);
-                prompt.innerHTML = `Merry Christmas!`;
-            }else if (ans === "nyu"){
-                pointsMaterial2.color.setHex(0x8900e1); // NYU Violet
-                pointsMaterial.color.setHex(0x57068c); // NYU Ultra Violet
-                prompt.innerHTML = `== NYU ==`;
-            }else{
-                prompt.innerHTML = `Close Enough.`;
+            switch(ans){
+                case "red40":
+                    pointsMaterial.color.setHex(0xff0000);
+                    pointsMaterial2.color.setHex(0xff2121);
+                    prompt.innerHTML = `At least it's not red21.`;
+                    state = 3;
+                    break;
+                case "christmas":
+                    pointsMaterial.color.setHex(0xff0000);
+                    pointsMaterial2.color.setHex(0x00ff00);
+                    prompt.innerHTML = `Merry Christmas!`;
+                    state = 3;
+                    break;
+                case "nyu":
+                    pointsMaterial2.color.setHex(0x8900e1); // NYU Violet
+                    pointsMaterial.color.setHex(0x57068c); // NYU Ultra Violet
+                    prompt.innerHTML = `== NYU ==`;
+                    state = 3;
+                    break;
+                default:
+                    meow = ans.indexOf(`meow`)>-1;
+                    prompt.innerHTML = meow ? "Meow. :3": (/^2\D.*$|^2$/.test(ans)? `Good Job.` :`Close Enough.`);
             }
-            recalibrate(ans === "bark");
+
             setTimeout(() => {
-                prompt.innerHTML = `What is your name?`;
-                input.value = "";
-                state = 2;
+                if(state == 1){
+                    prompt.innerHTML = `Pick a color:`;
+                    input.type = "color";
+                    input.value = "#bfffff";
+                    state = 2;
+                }else if(state == 3){
+                    prompt.innerHTML = `What is your name?`;
+                    input.value = "";
+                    state = 4;
+                }
             }, 1500);
         }, 700);
-    }else if(state == 2) {
+    }else if(state==2){
+        state = 3;
+        prompt.innerHTML = `...`;
+        setTimeout(() => {
+            pointsMaterial.color.set(input.value);
+            prompt.innerHTML = `The stars turn <span style = "color: ${input.value}">Δ</span>`
+            setTimeout(() => {
+                prompt.innerHTML = `What is your name?`;
+                input.type = "text";
+                input.value = "";
+                state = 4;
+            }, 1500);
+        }, 700);
+    }else if(state == 4) {
         audio.volume = scaleOuter;
         name = input.value;
 
@@ -258,12 +284,10 @@ function onSubmit(){
             overlay.innerHTML = `"${meow?"Hewwo\" >.< ": "Hello\" + "} ${name}`;
             setTimeout(() => {
                 if(meow && name.toLowerCase() === "emily"){
-                    overlay.innerHTML = `<3`;
                     pointsMaterial2.color.setHex(0xffbfff);
                     pointsMaterial.color.setHex(0xff00bf);
-                }else{
-                    overlay.innerHTML = `:)`;
-                }
+                    overlay.innerHTML = `<3`;
+                } else overlay.innerHTML = `:)`;
                 setTimeout(() => {
                     audio.play();
                     animate();
@@ -279,7 +303,7 @@ function onSubmit(){
 document.getElementById("submit").addEventListener("click", onSubmit);
 
 input.addEventListener("keydown", (e) =>{
-    if (e.keyCode == 13) onSubmit();
+    if (e.keyCode == 13) onSubmit(e);
 });
 
 
