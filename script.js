@@ -115,9 +115,9 @@ function onMove(cX, cY) { //cX, cY are client X and Y
 document.addEventListener('mousemove', (event) =>  onMove(event.clientX, event.clientY));
 document.addEventListener('mousedown', (event)=>{
     manualSpin = hovered;
-    startSpin(event.clientX, event.clientY)
+    startSpin(event.clientX, event.clientY);
 });
-document.addEventListener('mouseup', ()=> manualSpin = false);
+document.addEventListener('mouseup', ()=>manualSpin = false);
 
 document.addEventListener('touchmove', (event) => onMove(event.touches[0].clientX, event.touches[0].clientY));
 document.addEventListener('touchstart', (event) => {
@@ -156,7 +156,6 @@ function recalibrate(run = false){
     return false;
 }
 
-
 function animate() {
     requestAnimationFrame(animate);
     if(scaleOuter<1){
@@ -165,7 +164,10 @@ function animate() {
         scaleInner = scaleOuter
         sphere.scale.set(scaleOuter, scaleOuter, scaleOuter);
         points2.scale.set(scaleOuter, scaleOuter, scaleOuter);
-    }else scaleInner = Math.min(Math.max(scaleInner + (hovered?-0.01: (0.015 + (1-scaleInner)*0.03 )) , 0.7),1);
+    }else{
+        scaleInner += hovered?-0.01: (0.015 + (1-scaleInner)*0.03);
+        scaleInner = Math.min(Math.max(scaleInner, 0.7), 1);
+    } 
 
     points.scale.set(scaleInner, scaleInner, scaleInner);
 
@@ -185,41 +187,68 @@ const input = document.getElementById("introInput");
 const prompt = document.getElementById("prompt");
 const info = document.getElementById("info");
 var meow = false;
+
+async function stringToHexHash(input) {
+  // Convert the input string to an array buffer
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+  
+  // Hash the data using SHA-256
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  
+  // Convert the hash to a hexadecimal string
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+  
+  // Convert the hexadecimal string to a decimal value
+  const hashDecimal = parseInt(hashHex, 16);
+  
+  // Map the decimal value to the range 0 to 0x200000
+  const mappedValue = hashDecimal % 0x200000;
+  
+  return mappedValue;
+}
+
+function isColor(strColor){
+    var s = new Option().style;
+    s.color = strColor;
+    return s.color == strColor;
+}
+
 function onSubmit(){
+    var ans = input.value.trim().toLowerCase();
     if (state == 0) {
         state = 1;
-        var ans = input.value.trim().toLowerCase();
         if (document.body.requestFullscreen) document.body.requestFullscreen();
 
         prompt.innerHTML = `...`;
-        //info.style.display = "block";
         setTimeout(() => {
-            recalibrate();
-            meow = ans.indexOf(`meow`)>-1
-            if(meow) prompt.innerHTML = "Meow. :3";
-            else prompt.innerHTML =  (ans.length && ans[0] == '2')||recalibrate(ans === 'bark')?  `Good Job.`: `Close Enough.`;
-
-            if(ans === "red40"){
+            if(meow = ans.indexOf(`meow`)>-1) prompt.innerHTML = "Meow. :3";
+            else if(/^2\D.*$|^2$/.test(ans)){
+                 prompt.innerHTML = `Good Job.`;
+            }else if(ans === "red40"){
                 pointsMaterial.color.setHex(0xff0000);
-            }
-
-            if(ans === "christmas"){
+                pointsMaterial2.color.setHex(0xff2121);
+                prompt.innerHTML = `At least it's not red21.`;
+            }else if (ans === "christmas"){
                 pointsMaterial.color.setHex(0xff0000);
                 pointsMaterial2.color.setHex(0x00ff00);
-            }
-
-            if(ans === "nyu"){
+                prompt.innerHTML = `Merry Christmas!`;
+            }else if (ans === "nyu"){
                 pointsMaterial2.color.setHex(0x8900e1); // NYU Violet
                 pointsMaterial.color.setHex(0x57068c); // NYU Ultra Violet
+                prompt.innerHTML = `== NYU ==`;
+            }else{
+                prompt.innerHTML = `Close Enough.`;
             }
-
+            recalibrate(ans === "bark");
             setTimeout(() => {
                 prompt.innerHTML = `What is your name?`;
                 input.value = "";
                 state = 2;
             }, 1500);
         }, 700);
-    } else if (state == 2) {
+    }else if(state == 2) {
         audio.volume = scaleOuter;
         name = input.value;
 
