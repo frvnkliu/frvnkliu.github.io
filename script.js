@@ -16,7 +16,7 @@ scene.add(sphere);
 
 
 //randomly sample points for our spheres
-var numPoints = 1037; // adjust as needed
+var numPoints = 1337; // adjust as needed
 var pointsGeometry = new THREE.BufferGeometry();
 var positions = [];
 for (var i = 0; i < numPoints; i++) {
@@ -119,8 +119,12 @@ document.addEventListener('mousedown', (event)=>{
 });
 document.addEventListener('mouseup', ()=>manualSpin = false);
 
-document.addEventListener('touchmove', (event) => onMove(event.touches[0].clientX, event.touches[0].clientY));
+document.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+    onMove(event.touches[0].clientX, event.touches[0].clientY);
+});
 document.addEventListener('touchstart', (event) => {
+    event.preventDefault();
     manualSpin = true;
     hovered = true;
     points.rotationSpeed = 0.01;
