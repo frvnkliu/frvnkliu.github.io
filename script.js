@@ -146,20 +146,6 @@ sphere.scale.set(0, 0, 0);
 points.scale.set(0, 0, 0);
 points2.scale.set(0, 0, 0);
 
-function recalibrate(run = false){
-    if(!run){
-        terces.value = "bark";
-        return false;
-    } 
-    const cow = terces.value;
-    if(/^#[0-9A-F]{6}#[0-9A-F]{6}$/i.test(cow) ){
-        pointsMaterial.color.set(cow.substring(0,7));
-        pointsMaterial2.color.set(cow.substring(7));
-        return true;
-    }
-    return false;
-}
-
 function animate() {
     requestAnimationFrame(animate);
     if(scaleOuter<1){
@@ -189,35 +175,7 @@ var state = 0;
 var name = "";
 const input = document.getElementById("introInput");
 const prompt = document.getElementById("prompt");
-const info = document.getElementById("info");
 var meow = false;
-
-async function stringToHexHash(input) {
-  // Convert the input string to an array buffer
-  const encoder = new TextEncoder();
-  const data = encoder.encode(input);
-  
-  // Hash the data using SHA-256
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  
-  // Convert the hash to a hexadecimal string
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-  
-  // Convert the hexadecimal string to a decimal value
-  const hashDecimal = parseInt(hashHex, 16);
-  
-  // Map the decimal value to the range 0 to 0x200000
-  const mappedValue = hashDecimal % 0x200000;
-  
-  return mappedValue;
-}
-
-function isColor(strColor){
-    var s = new Option().style;
-    s.color = strColor;
-    return s.color == strColor;
-}
 
 function onSubmit(event){
     event.preventDefault();
@@ -229,12 +187,6 @@ function onSubmit(event){
         prompt.innerHTML = `...`;
         setTimeout(() => {
             switch(ans){
-                case "red40":
-                    pointsMaterial.color.setHex(0xff0000);
-                    pointsMaterial2.color.setHex(0xff2121);
-                    prompt.innerHTML = `At least it's not red21.`;
-                    state = 3;
-                    break;
                 case "christmas":
                     pointsMaterial.color.setHex(0xff0000);
                     pointsMaterial2.color.setHex(0x00ff00);
@@ -285,7 +237,7 @@ function onSubmit(event){
         const overlay = document.getElementById("overlay");
         overlay.innerHTML = `...`;
         setTimeout(() => {
-            overlay.innerHTML = `"${meow?"Hewwo\" >.< ": "Hello\" + "} ${name}`;
+            overlay.innerHTML = `"${meow?"Hewwo\" >.< ": "Hello \" + "} ${name}`;
             setTimeout(() => {
                 if(meow && name.toLowerCase() === "emily"){
                     pointsMaterial2.color.setHex(0xffbfff);
@@ -301,8 +253,6 @@ function onSubmit(event){
         }, 700);
     }
 }
-
-//document.getElementById("submit").addEventListener("touchstart click", onSubmit);
 
 document.getElementById("submit").addEventListener("click", onSubmit);
 
