@@ -146,28 +146,38 @@ sphere.scale.set(0, 0, 0);
 points.scale.set(0, 0, 0);
 points2.scale.set(0, 0, 0);
 
+const clock = new THREE.Clock();
+
+
 function animate() {
     requestAnimationFrame(animate);
-    if(scaleOuter<1){
-        scaleOuter = Math.min(1, scaleOuter+0.005);
+
+    // Get the time delta in seconds since the last frame
+    const deltaTime = clock.getDelta()*69;
+
+    // Adjust scaleOuter and scaleInner with deltaTime
+    if (scaleOuter < 1) {
+        scaleOuter = Math.min(1, scaleOuter + 0.005 * deltaTime); // Scale increment adjusted by deltaTime
         audio.volume = scaleOuter;
-        scaleInner = scaleOuter
+        scaleInner = scaleOuter;
         sphere.scale.set(scaleOuter, scaleOuter, scaleOuter);
         points2.scale.set(scaleOuter, scaleOuter, scaleOuter);
-    }else{
-        scaleInner += hovered?-0.01: (0.015 + (1-scaleInner)*0.03);
+    } else {
+        scaleInner += (hovered ? -0.01 : (0.015 + (1 - scaleInner) * 0.03)) * deltaTime;
         scaleInner = Math.min(Math.max(scaleInner, 0.7), 1);
-    } 
+    }
 
     points.scale.set(scaleInner, scaleInner, scaleInner);
 
-    points.rotation.x += points.rotationSpeed;
-    points.rotation.y += points.rotationSpeed;
+    // Update rotation based on deltaTime for smoother animation
+    points.rotation.x += points.rotationSpeed * deltaTime;
+    points.rotation.y += points.rotationSpeed * deltaTime;
 
-    if(!manualSpin){
-        points2.rotation.x -= 0.001;
-        points2.rotation.y -= 0.001;
+    if (!manualSpin) {
+        points2.rotation.x -= 0.001 * deltaTime;
+        points2.rotation.y -= 0.001 * deltaTime;
     }
+
     renderer.render(scene, camera);
 }
 
@@ -186,35 +196,13 @@ function onSubmit(event){
 
         prompt.innerHTML = `...`;
         setTimeout(() => {
-            switch(ans){
-                case "christmas":
-                    pointsMaterial.color.setHex(0xff0000);
-                    pointsMaterial2.color.setHex(0x00ff00);
-                    prompt.innerHTML = `Merry Christmas!`;
-                    state = 3;
-                    break;
-                case "nyu":
-                    pointsMaterial2.color.setHex(0x8900e1); // NYU Violet
-                    pointsMaterial.color.setHex(0x57068c); // NYU Ultra Violet
-                    prompt.innerHTML = `== NYU ==`;
-                    state = 3;
-                    break;
-                default:
-                    meow = ans.indexOf(`meow`)>-1;
-                    prompt.innerHTML = meow ? "Meow. :3": (/^2\D.*$|^2$/.test(ans)? `Good Job.` :`Close Enough.`);
-            }
-
+            state = 2;
+            meow = ans.indexOf(`meow`)>-1;
+            prompt.innerHTML = meow ? "Meow. :3": (/^2\D.*$|^2$/.test(ans)? `Good Job.` :`Close Enough.`);
             setTimeout(() => {
-                if(state == 1){
                     prompt.innerHTML = `Pick a color:`;
                     input.type = "color";
                     input.value = "#bfffff";
-                    state = 2;
-                }else if(state == 3){
-                    prompt.innerHTML = `What is your name?`;
-                    input.value = "";
-                    state = 4;
-                }
             }, 1500);
         }, 700);
     }else if(state==2){
