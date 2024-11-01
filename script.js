@@ -59,7 +59,6 @@ pointsGeometry2.setAttribute('position', new THREE.Float32BufferAttribute(positi
 var points2 = new THREE.Points(pointsGeometry2, pointsMaterial2);
 scene.add(points2);
 
-const terces= document.getElementById("secret").firstElementChild;
 // Initial speed
 points.rotationSpeed = 0.001;
 
