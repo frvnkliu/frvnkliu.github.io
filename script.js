@@ -87,8 +87,7 @@ function isHover(X, Y){
 }
 
 function onMove(cX, cY) { //cX, cY are client X and Y
-    var X = (cX / window.innerWidth) * 2 - 1;
-    var Y = -(cY / window.innerHeight) * 2 + 1;
+4
     if(manualSpin){
         var dX = -(Y - prevY);
         var dY = (X - prevX);
