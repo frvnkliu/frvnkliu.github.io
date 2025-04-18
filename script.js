@@ -87,7 +87,8 @@ function isHover(X, Y){
 }
 
 function onMove(cX, cY) { //cX, cY are client X and Y
-4
+    const X = (cX / window.innerWidth) * 2 - 1;
+    const Y = -(cY / window.innerHeight) * 2 + 1;
     if(manualSpin){
         var dX = -(Y - prevY);
         var dY = (X - prevX);
@@ -110,12 +111,17 @@ function onMove(cX, cY) { //cX, cY are client X and Y
     }
 }
 
-document.addEventListener('mousemove', (event) =>  onMove(event.clientX, event.clientY));
-document.addEventListener('mousedown', (event)=>{
+document.addEventListener('pointermove', (event) =>{
+    event.preventDefault();
+    onMove(event.clientX, event.clientY);
+});
+
+document.addEventListener('pointerdown', (event)=>{
     manualSpin = hovered;
     startSpin(event.clientX, event.clientY);
 });
-document.addEventListener('mouseup', ()=>manualSpin = false);
+document.addEventListener('pointerup', ()=>manualSpin = false);
+
 
 document.addEventListener('touchmove', (event) => {
     event.preventDefault();
@@ -132,7 +138,6 @@ document.addEventListener('touchend',()=>{
     hovered = manualSpin = false;
     points.rotationSpeed = 0.001;
 } , false);
-
 
 //Start Logic
 const audio = document.getElementById("bgAudio");
